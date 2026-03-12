@@ -1,10 +1,12 @@
 [project]
 name = "user-rate-limit"
 version = "0.1.0"
-description = "Add your description here"
+description = "Test file for rate limiting"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "requests>=2.32.5",
+]
 
 [dependency-groups]
 dev = [

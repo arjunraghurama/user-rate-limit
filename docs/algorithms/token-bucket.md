@@ -15,7 +15,7 @@ The **Token Bucket** algorithm assigns a bucket per user that holds a maximum nu
 ```mermaid
 graph TD
     Refill((Token Refill<br/>1 token/sec)) -->|Adds Tokens| Bucket[(Bucket<br/>Max: 10 Tokens)]
-    DropRefill>If Bucket Full,<br/>Drop extra tokens] --x Bucket
+    DropRefill[If Bucket Full,<br/>Drop extra tokens] -.-> Bucket
     
     Req(Incoming Request) -->|Tries to take 1 Token| Check{Bucket Empty?}
     Check -->|No| Take[Take 1 Token]
