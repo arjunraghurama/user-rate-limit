@@ -28,17 +28,17 @@ Calculation:
 
 ```mermaid
 graph TD
-    Prev[Previous Window: 12:00] -->|Count: 40| Calc
-    Curr[Current Window: 12:01] -->|Count: 10| Calc
+    Prev["Previous Window: 12:00"] -->|Count: 40| Calc
+    Curr["Current Window: 12:01"] -->|Count: 10| Calc
     
-    Time[Current Time: 12:01:15] -.->|Elapsed: 25%| Weighting
+    Time["Current Time: 12:01:15"] -. "Elapsed: 25%" .-> Weighting
     
-    Weighting[Weight of Previous Window = 75%] --> Calc
+    Weighting["Weight of Previous Window = 75%"] --> Calc
     
-    Calc((Calculate<br/>40 * 0.75 + 10 = 40)) --> Condition{40 < Limit (50)?}
+    Calc(("Calculate<br/>40 * 0.75 + 10 = 40")) --> Condition{"40 < Limit (50)?"}
     
-    Condition -->|Yes| Allow[Allow Request & Increment Current Window]
-    Condition -->|No| Block[Block Request (429)]
+    Condition -->|Yes| Allow["Allow Request & Increment Current Window"]
+    Condition -->|No| Block["Block Request 429"]
 ```
 
 ## Pros and Cons
