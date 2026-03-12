@@ -1,6 +1,6 @@
 [project]
 site_name = "Rate Limit"
-site_description = "Lightweight durable execution framework for Python"
+site_description = "Rate Limiting Algorithms"
 
 site_author = "Arjun"
 
