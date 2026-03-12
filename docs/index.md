@@ -21,13 +21,13 @@ In a typical web application, rate limiting is implemented at an infrastructure 
 graph LR
     Client1[Client A] --> LB[Load Balancer / API Gateway]
     Client2[Client B] --> LB
-    Client3[Attacker] -. Too many requests .-> LB
+    Client3[Attacker] -.->|Too many requests| LB
     
     LB -->|Allowed| RateLimiter[Rate Limit Middleware]
     RateLimiter -->|Check Limit| Cache[(Valkey / Redis)]
     
     RateLimiter -->|Under Limit| AppServer[App Server]
-    RateLimiter -. Over Limit .-> 429[Return 429 Too Many Requests]
+    RateLimiter -.->|Over Limit| Error429[Return 429 Too Many Requests]
     
     AppServer --> DB[(Database)]
 ```

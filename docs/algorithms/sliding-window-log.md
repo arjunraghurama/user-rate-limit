@@ -15,35 +15,35 @@ The **Sliding Window Log** algorithm resolves the "boundary effect" problem of t
 sequenceDiagram
     participant Client
     participant RateLimiter
-    participant Valkey(ZSET)
+    participant ValkeyZSET as Valkey(ZSET)
 
-    Note over Client,Valkey(ZSET): Limit: 3 requests / 60s
+    Note over Client,ValkeyZSET: Limit: 3 requests / 60s
     
     Client->>RateLimiter: Req 1 (T=10s)
-    RateLimiter->>Valkey(ZSET): ZADD log T=10
-    RateLimiter->>Valkey(ZSET): ZCOUNT log (T-60s) to T -> Returns 1
+    RateLimiter->>ValkeyZSET: ZADD log T=10
+    RateLimiter->>ValkeyZSET: ZCOUNT log (T-60s) to T -> Returns 1
     RateLimiter-->>Client: 200 OK
 
     Client->>RateLimiter: Req 2 (T=25s)
-    RateLimiter->>Valkey(ZSET): ZADD log T=25
-    RateLimiter->>Valkey(ZSET): ZCOUNT log (T-60s) to T -> Returns 2
+    RateLimiter->>ValkeyZSET: ZADD log T=25
+    RateLimiter->>ValkeyZSET: ZCOUNT log (T-60s) to T -> Returns 2
     RateLimiter-->>Client: 200 OK
 
     Client->>RateLimiter: Req 3 (T=45s)
-    RateLimiter->>Valkey(ZSET): ZADD log T=45
-    RateLimiter->>Valkey(ZSET): ZCOUNT log (T-60s) to T -> Returns 3
+    RateLimiter->>ValkeyZSET: ZADD log T=45
+    RateLimiter->>ValkeyZSET: ZCOUNT log (T-60s) to T -> Returns 3
     RateLimiter-->>Client: 200 OK
 
     Client->>RateLimiter: Req 4 (T=50s)
-    RateLimiter->>Valkey(ZSET): ZADD log T=50
-    RateLimiter->>Valkey(ZSET): ZCOUNT log (T-60s) to T -> Returns 4
+    RateLimiter->>ValkeyZSET: ZADD log T=50
+    RateLimiter->>ValkeyZSET: ZCOUNT log (T-60s) to T -> Returns 4
     RateLimiter-->>Client: 429 Too Many Requests
 
-    Note over Client,Valkey(ZSET): Later... T=80s. T-60s = 20s. Old T=10s is removed.
+    Note over Client,ValkeyZSET: Later... T=80s. T-60s = 20s. Old T=10s is removed.
     Client->>RateLimiter: Req 5 (T=80s)
-    RateLimiter->>Valkey(ZSET): ZREMRANGEBYSCORE log 0 20
-    RateLimiter->>Valkey(ZSET): ZADD log T=80
-    RateLimiter->>Valkey(ZSET): ZCOUNT log 20 to 80 -> Returns 3 (T=25, 45, 80)
+    RateLimiter->>ValkeyZSET: ZREMRANGEBYSCORE log 0 20
+    RateLimiter->>ValkeyZSET: ZADD log T=80
+    RateLimiter->>ValkeyZSET: ZCOUNT log 20 to 80 -> Returns 3 (T=25, 45, 80)
     RateLimiter-->>Client: 200 OK
 ```
 
